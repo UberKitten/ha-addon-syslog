@@ -169,9 +169,12 @@ def _format_rfc5424(
     priority: int, timestamp: datetime, hostname: str, app_name: str, message: str
 ) -> str:
     """Format a syslog message per RFC 5424."""
+    if timestamp.tzinfo is None:
+        timestamp = timestamp.replace(tzinfo=timezone.utc)
+    # RFC 5424 requires ISO 8601 with timezone offset
     ts_str = timestamp.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
-    # Insert colon in timezone offset (e.g., +0000 -> +00:00)
-    if ts_str[-5:].isdigit() or (ts_str[-5] in "+-" and ts_str[-4:].isdigit()):
+    # Insert colon in timezone offset (e.g., +0000 -> +00:00) for strict compliance
+    if len(ts_str) >= 5 and ts_str[-5] in "+-" and ts_str[-4:].isdigit():
         ts_str = ts_str[:-2] + ":" + ts_str[-2:]
     return f"<{priority}>1 {ts_str} {hostname} {app_name} - - - {message}"
 

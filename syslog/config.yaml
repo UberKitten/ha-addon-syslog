@@ -14,7 +14,7 @@ options:
   syslog_host: syslog.local
   syslog_port: 514
   syslog_protocol: udp
-  syslog_format: rfc3164
+  syslog_format: rfc5424
   syslog_ssl: false
   syslog_ssl_verify: true
 schema:

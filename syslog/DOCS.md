@@ -30,4 +30,4 @@ syslog_ssl_verify: false
 
 In case you've found a bug, please [open an issue on GitHub][issue].
 
-[issue]: https://github.com/mib1185/ha-addon-syslog/issues
+[issue]: https://github.com/UberKitten/ha-addon-syslog/issues

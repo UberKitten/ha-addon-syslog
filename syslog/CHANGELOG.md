@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0
+
+- Fix journal reader in containers (boot ID mismatch with host journal)
+- Add configurable syslog format: RFC 3164 (default) or RFC 5424
+- Use proper RFC-compliant message formatting (timestamps, structured data)
+- Use bounded wait timeout (30s) instead of infinite blocking
+- Log send errors to stderr instead of silently swallowing them
+- Drop deprecated architectures (armhf, armv7, i386)
+- Switch image hosting from DockerHub to GHCR
+
 ## 0.4.1
 
 - Fix tagging of containers

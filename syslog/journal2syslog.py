@@ -5,6 +5,7 @@ import logging.handlers
 import re
 import socket
 import ssl
+import sys
 from os import environ
 
 from systemd import journal
@@ -60,11 +61,12 @@ class TlsSysLogHandler(logging.handlers.SysLogHandler):
 
         return context.wrap_socket(sock, server_hostname=host)
 
-    def handleError(self, _):
+    def handleError(self, record):
         """
-        Handle errors silent
-        Close failing socket so next emit will try to create a new socket
+        Log errors to stderr instead of silently swallowing them.
+        Close failing socket so next emit will try to create a new socket.
         """
+        print(f"Syslog send error for: {record.getMessage()[:100]}", file=sys.stderr)
         if self.socket is not None:
             self.socket.close()
             self.socket = None
@@ -176,7 +178,7 @@ last_container_log_level: dict[str, int] = {}
 
 # wait for new messages in journal
 while True:
-    change = jr.wait(timeout=None)
+    change = jr.wait(timeout=30)
     for entry in jr:
         extra = {"prog": entry.get("SYSLOG_IDENTIFIER")}
 
